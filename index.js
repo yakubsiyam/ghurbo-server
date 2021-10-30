@@ -28,52 +28,54 @@ async function run() {
     const destinationCollection = database.collection("destination");
 
     // GET API for find multiple data.
-    app.get("/destination", async (req, res) => {
+    app.get("/destinations", async (req, res) => {
       const cursor = destinationCollection.find({});
-      const services = await cursor.toArray();
-      res.send(services);
+      const destinations = await cursor.toArray();
+      res.send(destinations);
     });
 
     // GET API for find single data.
-    app.get("/service/:id", async (req, res) => {
-      const id = req.params.id;
+    app.get("/destinations/:destinationId", async (req, res) => {
+      const id = req.params.destinationId;
       const query = { _id: ObjectId(id) };
-      const oneService = await servicesCollection.findOne(query);
-      res.send(oneService);
+      const singleDestination = await destinationCollection.findOne(query);
+      res.send(singleDestination);
     });
 
     // POST API for create single data
-    app.post("/service", async (req, res) => {
-      const service = req.body;
-      const singleService = await servicesCollection.insertOne(service);
-      res.json(singleService);
+    app.post("/destination", async (req, res) => {
+      const destination = req.body;
+      const singleDestination = await destinationCollection.insertOne(service);
+      res.json(singleDestination);
     });
 
+    //PUT APT to update single data
+
     app.put("/update/:id", async (req, res) => {
-      const id = req.params.id;
-      const updateService = req.body;
+      const id = req.params.destinationId;
+      const updateDestination = req.body;
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          name: updateService.name,
-          price: updateService.price,
+          title: updateDestination.title,
+          cost: updateDestination.cost,
         },
       };
-      const updatedService = await servicesCollection.updateOne(
+      const updatedDestination = await destinationCollection.updateOne(
         filter,
         updateDoc,
         options
       );
-      res.json(updatedService);
+      res.json(updatedDestination);
     });
 
     // delete api
-    app.delete("/service/:id", async (req, res) => {
-      const id = req.params.id;
+    app.delete("/destinations/:destinationId", async (req, res) => {
+      const id = req.params.destinationId;
       const query = { _id: ObjectId(id) };
-      const deleteService = await servicesCollection.deleteOne(query);
-      res.send(deleteService);
+      const deleteDestination = await destinationCollection.deleteOne(query);
+      res.send(deleteDestination);
     });
   } finally {
     // await client.close();
@@ -83,7 +85,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Ghurbo Working.....");
 });
 
 app.listen(port, () => {
