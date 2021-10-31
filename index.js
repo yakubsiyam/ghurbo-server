@@ -51,6 +51,13 @@ async function run() {
       res.send(singleDestination);
     });
 
+    app.get("/usersinfo/:id", async (req, res) => {
+      const id = req.params.destinationId;
+      const query = { _id: ObjectId(id) };
+      const singleReservation = await userInfoCollection.findOne(query);
+      res.send(singleReservation);
+    });
+
     // POST API for create single data
     app.post("/usersinfo", async (req, res) => {
       const user = req.body;
@@ -99,6 +106,13 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const deleteDestination = await destinationCollection.deleteOne(query);
       res.send(deleteDestination);
+    });
+
+    app.delete("/usersinfo/:id", async (req, res) => {
+      const id = req.params.destinationId;
+      const query = { _id: ObjectId(id) };
+      const deleteReservation = await userInfoCollection.deleteOne(query);
+      res.send(deleteReservation);
     });
   } finally {
     // await client.close();
