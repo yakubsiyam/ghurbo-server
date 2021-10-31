@@ -51,8 +51,8 @@ async function run() {
       res.send(singleDestination);
     });
 
-    app.get("/usersinfo/:id", async (req, res) => {
-      const id = req.params.destinationId;
+    app.get("/usersinfo/:uid", async (req, res) => {
+      const id = req.params.uid;
       const query = { _id: ObjectId(id) };
       const singleReservation = await userInfoCollection.findOne(query);
       res.send(singleReservation);
@@ -108,8 +108,8 @@ async function run() {
       res.send(deleteDestination);
     });
 
-    app.delete("/usersinfo/:id", async (req, res) => {
-      const id = req.params.destinationId;
+    app.delete("/usersinfo/:uid", async (req, res) => {
+      const id = req.params.uid;
       const query = { _id: ObjectId(id) };
       const deleteReservation = await userInfoCollection.deleteOne(query);
       res.send(deleteReservation);
