@@ -26,6 +26,15 @@ async function run() {
     await client.connect();
     const database = client.db("ghurbo");
     const destinationCollection = database.collection("destination");
+    const blogCollection = database.collection("blogs");
+    const userInfoCollection = database.collection("userInfo");
+
+    // GET API for blog data.
+    app.get("/blogs", async (req, res) => {
+      const cursor = blogCollection.find({});
+      const blog = await cursor.toArray();
+      res.send(blog);
+    });
 
     // GET API for find multiple data.
     app.get("/destinations", async (req, res) => {
@@ -40,6 +49,20 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const singleDestination = await destinationCollection.findOne(query);
       res.send(singleDestination);
+    });
+
+    // POST API for create single data
+    app.post("/userinfo", async (req, res) => {
+      const user = req.body;
+      const singleDestination = await userInfoCollection.insertOne(user);
+      res.json(singleDestination);
+    });
+
+    // GET API for create multiple data.
+    app.get("/usersinfo", async (req, res) => {
+      const cursor = userInfoCollection.find({});
+      const usersInfo = await cursor.toArray();
+      res.send(usersInfo);
     });
 
     // POST API for create single data
