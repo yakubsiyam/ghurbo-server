@@ -29,7 +29,7 @@ async function run() {
     const blogCollection = database.collection("blogs");
     const userInfoCollection = database.collection("userInfo");
 
-    // GET API for blog data.
+    // GET API for blogs data
     app.get("/blogs", async (req, res) => {
       const cursor = blogCollection.find({});
       const blog = await cursor.toArray();
@@ -52,7 +52,7 @@ async function run() {
     });
 
     // POST API for create single data
-    app.post("/userinfo", async (req, res) => {
+    app.post("/usersinfo", async (req, res) => {
       const user = req.body;
       const singleDestination = await userInfoCollection.insertOne(user);
       res.json(singleDestination);
