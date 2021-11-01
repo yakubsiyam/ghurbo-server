@@ -58,6 +58,18 @@ async function run() {
       res.send(singleReservation);
     });
 
+    // my cart data filtering
+    app.get("/usersinfo", async (req, res) => {
+      let query = {};
+      const email = req.query.email;
+      if (email) {
+        query = { email: email };
+      }
+      const cursor = userInfoCollection.find(query);
+      const myCart = await cursor.toArray();
+      res.send(myCart);
+    });
+
     // POST API for create single data
     app.post("/usersinfo", async (req, res) => {
       const user = req.body;
