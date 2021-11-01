@@ -86,14 +86,15 @@ async function run() {
     });
 
     // POST API for create single data
-    app.post("/destination", async (req, res) => {
+    app.post("/destinations", async (req, res) => {
       const destination = req.body;
-      const singleDestination = await destinationCollection.insertOne(service);
+      const singleDestination = await destinationCollection.insertOne(
+        destination
+      );
       res.json(singleDestination);
     });
 
-    //PUT APT to update single data
-
+    //PUT APT to update status data
     app.put("/usersinfo/:uid", async (req, res) => {
       const id = req.params.uid;
       const updateStatus = "accepted";
