@@ -36,14 +36,14 @@ async function run() {
       res.send(blog);
     });
 
-    // GET API for find multiple data.
+    // GET API for find multiple destinations data.
     app.get("/destinations", async (req, res) => {
       const cursor = destinationCollection.find({});
       const destinations = await cursor.toArray();
       res.send(destinations);
     });
 
-    // GET API for find single data.
+    // GET API for find single destination data.
     app.get("/destinations/:destinationId", async (req, res) => {
       const id = req.params.destinationId;
       const query = { _id: ObjectId(id) };
@@ -51,6 +51,7 @@ async function run() {
       res.send(singleDestination);
     });
 
+    // GET API for find users info/my cart data
     app.get("/usersinfo/:uid", async (req, res) => {
       const id = req.params.uid;
       const query = { _id: ObjectId(id) };
@@ -58,7 +59,7 @@ async function run() {
       res.send(singleReservation);
     });
 
-    // my cart data filtering
+    // my cart/users info data filtering
     app.get("/usersinfo", async (req, res) => {
       let query = {};
       const email = req.query.email;
@@ -70,7 +71,7 @@ async function run() {
       res.send(myCart);
     });
 
-    // POST API for create single data
+    // POST API for create single destination data
     app.post("/usersinfo", async (req, res) => {
       const user = req.body;
       const singleDestination = await userInfoCollection.insertOne(user);
@@ -93,23 +94,22 @@ async function run() {
 
     //PUT APT to update single data
 
-    app.put("/update/:id", async (req, res) => {
-      const id = req.params.destinationId;
-      const updateDestination = req.body;
+    app.put("/usersinfo/:uid", async (req, res) => {
+      const id = req.params.uid;
+      const updateStatus = "accepted";
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = {
         $set: {
-          title: updateDestination.title,
-          cost: updateDestination.cost,
+          status: updateStatus,
         },
       };
-      const updatedDestination = await destinationCollection.updateOne(
+      const updatedDestination = await userInfoCollection.updateOne(
         filter,
         updateDoc,
         options
       );
-      res.json(updatedDestination);
+      res.send(updatedDestination);
     });
 
     // delete api
